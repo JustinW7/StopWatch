@@ -1,24 +1,24 @@
- const timerEl=document.getElementById("timer");
- const startEl=document.getElementById("start");
- const stopEl=document.getElementById("stop");
- const resetEl=document.getElementById("reset");
+const timerEl = document.getElementById("timer");
+const startButtonEl = document.getElementById("start");
+const stopButtonEl = document.getElementById("stop");
+const resetButtonEl = document.getElementById("reset");
 
- let startTime = 0;
+let startTime = 0;
 let elapsedTime = 0;
 let timerInterval;
-console.log(16000 % 1000);
 
- function startTimer() {
- startTime = Date.now()-elapsedTime;
-timerInterval = setInterval(() => {
-  elapsedTime = Date.now() - startTime;
+function startTimer() {
+  startTime = Date.now() - elapsedTime;
 
-  timerEl.textContent = formatTime(elapsedTime);
-}, 10);
+  timerInterval = setInterval(() => {
+    elapsedTime = Date.now() - startTime;
+    timerEl.textContent = formatTime(elapsedTime);
+  }, 10);
 
-startButtonEl.disabled = true;
-stopButtonEl.disabled = false;
+  startButtonEl.disabled = true;
+  stopButtonEl.disabled = false;
 }
+
 function formatTime(elapsedTime) {
   const milliseconds = Math.floor((elapsedTime % 1000) / 10);
   const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
@@ -34,17 +34,21 @@ function formatTime(elapsedTime) {
     (milliseconds > 9 ? milliseconds : "0" + milliseconds)
   );
 }
-
- function stopTimer() {
-  console.log("stop");
- }
- function resetTimer() {
+function stopTimer() {
   clearInterval(timerInterval);
-  elapsedTime = 0;
-timerEl.innerHTML="00:00:00:00";
-  }
+  startButtonEl.disabled = false;
+  stopButtonEl.disabled = true;
+}
+function resetTimer() {
+  clearInterval(timerInterval);
 
-  console.log("startTimer");
-startEl.addEventListener("click",startTimer)
-stopEl.addEventListener("click",stopTimer)
-resetEl.addEventListener("click",resetTimer)
+  elapsedTime = 0;
+  timerEl.textContent = "00:00:00";
+
+  startButtonEl.disabled = false;
+  stopButtonEl.disabled = true;
+}
+
+startButtonEl.addEventListener("click", startTimer);
+stopButtonEl.addEventListener("click", stopTimer);
+resetButtonEl.addEventListener("click", resetTimer);
